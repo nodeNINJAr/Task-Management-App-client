@@ -1,0 +1,109 @@
+import React, { useState } from "react";
+import { Button, Modal, Form, Input, Select } from "antd";
+import { format } from "date-fns"; 
+
+const TaskFormModal = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+
+  // Function to show the modal
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // Function to handle modal close
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields(); 
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (values) => {
+    console.log("Form Values:", values);
+    setIsModalVisible(false); 
+    form.resetFields(); 
+  };
+
+  return (
+    <div className="flex justify-center mt-10">
+      {/* Button to open the modal */}
+      <Button type="primary" onClick={showModal} className="bg-blue-500">
+        Add Task
+      </Button>
+
+      {/* Modal */}
+      <Modal
+        title="Add New Task"
+        open={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        className="w-full max-w-md"
+      >
+        {/* Form */}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          className="space-y-4"
+        >
+          {/* Title Field */}
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[
+              { required: true, message: "Please enter the task title!" },
+              { max: 50, message: "Title must not exceed 50 characters!" },
+            ]}
+          >
+            <Input placeholder="Enter task title" />
+          </Form.Item>
+
+          {/* Description Field */}
+          <Form.Item
+            label="Description"
+            name="description"
+            rules={[
+              { max: 200, message: "Description must not exceed 200 characters!" },
+            ]}
+          >
+            <Input.TextArea rows={3} placeholder="Enter task description" />
+          </Form.Item>
+
+          {/* Category Field */}
+          <Form.Item
+            label="Category"
+            name="category"
+            rules={[{ required: true, message: "Please select a category!" }]}
+          >
+            <Select placeholder="Select category">
+              <Select.Option value="To-Do">To-Do</Select.Option>
+              <Select.Option value="In Progress">In Progress</Select.Option>
+              <Select.Option value="Done">Done</Select.Option>
+            </Select>
+          </Form.Item>
+
+          {/* Timestamp Field */}
+          <Form.Item label="Timestamp" name="timestamp">
+            <Input
+              disabled
+              value={format(new Date(), "yyyy-MM-dd HH:mm:ss")} // Use date-fns to format the timestamp
+            />
+          </Form.Item>
+
+          {/* Submit Button */}
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full bg-blue-500"
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
+  );
+};
+
+export default TaskFormModal;
