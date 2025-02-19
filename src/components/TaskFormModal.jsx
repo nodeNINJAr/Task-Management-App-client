@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Select } from "antd";
-import { format } from "date-fns"; 
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAuth from "../hooks/useAuth";
 
 const TaskFormModal = () => {
+  const {user} = useAuth();
+  const axiosSecure = useAxiosSecure();
+  // 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -18,10 +22,13 @@ const TaskFormModal = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = (values) => {
-    console.log("Form Values:", values);
-    setIsModalVisible(false); 
-    form.resetFields(); 
+  const handleSubmit = async(values) => {
+    const {data} = await axiosSecure.post('/tasks', {...values, uid:user?.uid});
+    if(data?.insertedId){
+      setIsModalVisible(false); 
+      form.resetFields(); 
+    }
+    
   };
 
   return (
@@ -80,14 +87,6 @@ const TaskFormModal = () => {
               <Select.Option value="In Progress">In Progress</Select.Option>
               <Select.Option value="Done">Done</Select.Option>
             </Select>
-          </Form.Item>
-
-          {/* Timestamp Field */}
-          <Form.Item label="Timestamp" name="timestamp">
-            <Input
-              disabled
-              value={format(new Date(), "yyyy-MM-dd HH:mm:ss")} // Use date-fns to format the timestamp
-            />
           </Form.Item>
 
           {/* Submit Button */}
