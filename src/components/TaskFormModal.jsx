@@ -4,9 +4,9 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 
 const TaskFormModal = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  // 
+  //
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -18,24 +18,26 @@ const TaskFormModal = () => {
   // Function to handle modal close
   const handleCancel = () => {
     setIsModalVisible(false);
-    form.resetFields(); 
+    form.resetFields();
   };
 
   // Function to handle form submission
-  const handleSubmit = async(values) => {
-    const {data} = await axiosSecure.post('/tasks', {...values, uid:user?.uid});
-    if(data?.insertedId){
-      setIsModalVisible(false); 
-      form.resetFields(); 
+  const handleSubmit = async (values) => {
+    const { data } = await axiosSecure.post("/tasks", {
+      ...values,
+      uid: user?.uid,
+    });
+    if (data?.insertedId) {
+      setIsModalVisible(false);
+      form.resetFields();
     }
-    
   };
 
   return (
-    <div className="flex justify-center mt-10">
+    <div className="flex justify-center">
       {/* Button to open the modal */}
-      <Button type="primary" onClick={showModal} className="bg-blue-500">
-        Add Task
+      <Button variant="outlined" onClick={showModal}>
+        <span className="text-base font-semibold"> Add Task</span>
       </Button>
 
       {/* Modal */}
@@ -70,7 +72,10 @@ const TaskFormModal = () => {
             label="Description"
             name="description"
             rules={[
-              { max: 200, message: "Description must not exceed 200 characters!" },
+              {
+                max: 200,
+                message: "Description must not exceed 200 characters!",
+              },
             ]}
           >
             <Input.TextArea rows={3} placeholder="Enter task description" />

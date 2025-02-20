@@ -4,14 +4,13 @@ import { socket } from "../socket";
 import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Task from "../components/Task";
-import TaskFormModal from "../components/TaskFormModal";
+import TaskNav from "../components/TaskNav";
 
 
 // 
 const TaskBoard = () => {
   const axiosSecure = useAxiosSecure();
   const [tasks, setTasks] = useState([]);
-  console.log(tasks);
   const { user } = useAuth();
 
   //
@@ -29,6 +28,8 @@ const TaskBoard = () => {
 };
 
 
+
+// 
 const handleDragEnd = async (result) => {
   const { destination, draggableId } = result;
 
@@ -78,9 +79,10 @@ const handleDragEnd = async (result) => {
 // 
   return (
     <div className="p-4">
-      <TaskFormModal/>
-      <h1 className="text-center text-2xl font-bold">Task Board</h1>
-      <div className="grid grid-cols-3 gap-4">
+      {/* task nav */}
+       <TaskNav/>
+      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-mono my-8">Task Board</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <DragDropContext onDragEnd={handleDragEnd}>
           {["To-Do", "In Progress", "Done"].map((category) => (
             <Droppable key={category} droppableId={category}>
