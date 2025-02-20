@@ -12,13 +12,13 @@ const TaskBoard = () => {
   const axiosSecure = useAxiosSecure();
   const [tasks, setTasks] = useState([]);
   const { user } = useAuth();
-
+  const [refresh,setRefresh] = useState(false);
   //
   useEffect(() => {
     fetchTasks();
     socket.on("task-updated", fetchTasks);
     return () => socket.off("task-updated");
-  }, [user?.uid]);
+  }, [user?.uid, refresh]);
 
   // Fetch data by user
   const fetchTasks = async () => {
@@ -27,8 +27,7 @@ const TaskBoard = () => {
     setTasks(sortedTasks);
 };
 
-
-
+console.log(tasks);
 // 
 const handleDragEnd = async (result) => {
   const { destination, draggableId } = result;
@@ -80,7 +79,7 @@ const handleDragEnd = async (result) => {
   return (
     <div className="p-4">
       {/* task nav */}
-       <TaskNav/>
+       <TaskNav refresh={refresh} setRefresh={setRefresh}/>
       <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8">Task Board</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 font-Roboto">
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -103,7 +102,7 @@ const handleDragEnd = async (result) => {
                       >
                         {(provided) => (
                           <>
-                            <Task task={task} provided={provided} />
+                            <Task refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
                           </>
                         )}
                       </Draggable>
