@@ -33,9 +33,9 @@ const SignOut = () => {
     }
     // 
   return (
-    <div className="flex justify-start gap-3 font-mono">
-       {user?<><Avatar src={user?.photoURL} /> <Button onClick={handleSignOut}> <span className="text-base font-semibold">Sign Out</span></Button></>:
-      <><Avatar icon={<UserOutlined />} /> <Button onClick={handleGoogleSignIn}> <span className="text-base font-semibold"><GoogleOutlined /> Sign In</span></Button></>}
+    <div className="flex justify-start gap-3 font-Roboto">
+       {user?<><Avatar src={user?.photoURL} /> <Button onClick={handleSignOut}> <span className="text-base font-semibold font-Josefin">Sign Out</span></Button></>:
+      <><Avatar icon={<UserOutlined />} /> <Button onClick={handleGoogleSignIn}> <span className="text-base font-semibold font-Josefin"><GoogleOutlined /> Sign In</span></Button></>}
     </div>
   );
 };

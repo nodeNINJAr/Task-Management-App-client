@@ -81,8 +81,8 @@ const handleDragEnd = async (result) => {
     <div className="p-4">
       {/* task nav */}
        <TaskNav/>
-      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-mono my-8">Task Board</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8">Task Board</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 font-Roboto">
         <DragDropContext onDragEnd={handleDragEnd}>
           {["To-Do", "In Progress", "Done"].map((category) => (
             <Droppable key={category} droppableId={category}>

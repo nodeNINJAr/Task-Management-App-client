@@ -34,10 +34,10 @@ const TaskFormModal = () => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center font-Roboto">
       {/* Button to open the modal */}
       <Button variant="outlined" onClick={showModal}>
-        <span className="text-base font-semibold"> Add Task</span>
+        <span className="text-base font-medium font-Josefin"> Add Task</span>
       </Button>
 
       {/* Modal */}
