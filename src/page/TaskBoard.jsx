@@ -27,7 +27,6 @@ const TaskBoard = () => {
     setTasks(sortedTasks);
 };
 
-console.log(tasks);
 // 
 const handleDragEnd = async (result) => {
   const { destination, draggableId } = result;
@@ -61,7 +60,7 @@ const handleDragEnd = async (result) => {
 
   // Send update to backend
   try {
-    await axiosSecure.put("/tasks/reorder", {
+    await axiosSecure.put("/task/reorder", {
       tasks: reorderedTasks.map(task => ({
         _id: task._id.toString(),
         position: task.position,
@@ -73,7 +72,6 @@ const handleDragEnd = async (result) => {
     console.error("Error updating task order:", error);
   }
 };
-
 
 // 
   return (
@@ -102,7 +100,7 @@ const handleDragEnd = async (result) => {
                       >
                         {(provided) => (
                           <>
-                            <Task refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
+                            <Task onEdit={() => openUpdateModal(task)} refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
                           </>
                         )}
                       </Draggable>

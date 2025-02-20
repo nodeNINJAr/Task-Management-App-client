@@ -1,27 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { format } from "date-fns";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { notification } from "antd";
+import UpdateTaskModal from "./addTaskModal/UpdateTaskModal";
 
+
+// 
 const Task = ({ task, provided,setRefresh,refresh }) => {
   // 
   const axiosSecure = useAxiosSecure();
  // Convert to readable Date and Time
 const formattedDate = format(new Date(task?.timestamp), "dd/MM/yyyy"); 
 const formattedTime = format(new Date(task?.timestamp), "hh:mm a"); 
+// For Update Modal
+const [isUpdateVisible, setIsUpdateVisible] = useState(false);
+const [selectedTask, setSelectedTask] = useState(null);
 
-// 
+
+// For task delete
 const handleDelete = async(task)=>{
     // 
    const {data} = await axiosSecure.delete(`/task/${task?._id}`);
-   console.log(data);
    if(data?.deletedCount === 1){
     setRefresh(!refresh);
     notification.success({message:<>Task Deleted From <span className="text-red-500">{task?.category}</span></>})
    }
 }
+
+// Open modal
+const openUpdateModal = (task) => {
+  setSelectedTask(task);
+  setIsUpdateVisible(true);
+};
+
+
+// Update function
+const handleUpdateTask = async (updatedTask) => {
+  try {
+   const {data} = await axiosSecure.put(`/tasks/${updatedTask._id}`, updatedTask);
+     if(data?.modifiedCount===1){
+      notification.success({message:"Task Updated"})
+      setRefresh(!refresh); // Refresh list
+      setIsUpdateVisible(false);
+     }
+    
+  } catch (error) {
+    console.error("Error updating task:", error);
+  }
+};
+
 
 // 
   return (
@@ -32,9 +61,15 @@ const handleDelete = async(task)=>{
           className={`${task?.category === "To-Do" && "bg-[#C9FDC7]" || task?.category ==="In Progress" && "bg-[#FBF398]" || task?.category === "Done" &&"bg-[#DDDFFE]" } p-4 rounded-lg shadow-md relative group transition duration-300 font-Roboto`}
         >
           <div className="absolute top-1 right-1 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            <button onClick={()=>openUpdateModal(task)} className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
               <EditOutlined />
             </button>
+            <UpdateTaskModal
+                visible={isUpdateVisible}
+                onCancel={() => setIsUpdateVisible(false)}
+                onUpdate={handleUpdateTask}
+                task={selectedTask}
+              />
             <button onClick={()=>handleDelete(task)}  className="cursor-pointer bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
               <DeleteOutlined />
             </button>
@@ -73,12 +108,15 @@ const handleDelete = async(task)=>{
 };
 Task.propTypes = {
   task: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
     title: PropTypes.string,
     category: PropTypes.string,
     description: PropTypes.string,
   }).isRequired,
   provided: PropTypes.object.isRequired,
+  setRefresh: PropTypes.func.isRequired,
+  refresh: PropTypes.bool.isRequired,
 };
 
 export default Task;
