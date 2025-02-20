@@ -81,7 +81,7 @@ const handleDragEnd = async (result) => {
       <MarqueeText/>
       {/* task nav */}
        <TaskNav refresh={refresh} setRefresh={setRefresh}/>
-      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8">Task Board</h1>
+      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8 dark:text-white">Task Board</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 font-Roboto">
         <DragDropContext onDragEnd={handleDragEnd}>
           {["To-Do", "In Progress", "Done"].map((category) => (
@@ -90,9 +90,9 @@ const handleDragEnd = async (result) => {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="bg-gray-200 p-4 rounded-md min-h-[300px] space-y-4"
+                  className=" dark-bg bg-gray-200 p-4 rounded-md min-h-[300px] space-y-4"
                 >
-                  <h3 className="text-lg font-bold mb-2">{category}</h3>
+                  <h3 className="text-lg font-bold mb-2 dark:text-gray-100">{category}</h3>
                   {tasks
                     .filter((task) => task.category === category)
                     .map((task, index) => (
@@ -103,7 +103,7 @@ const handleDragEnd = async (result) => {
                       >
                         {(provided) => (
                           <>
-                            <Task onEdit={() => openUpdateModal(task)} refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
+                            <Task refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
                           </>
                         )}
                       </Draggable>

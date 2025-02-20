@@ -4,6 +4,7 @@ import { GoogleOutlined, UserOutlined } from '@ant-design/icons';
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import { useNavigate } from "react-router";
+import DarkMode from "./shared/DarkMode";
 
 const SignOut = () => {
     // 
@@ -39,6 +40,7 @@ const SignOut = () => {
     // 
   return (
     <div className="flex justify-start gap-3 font-Roboto">
+       <DarkMode/>
        {user?<><Avatar src={user?.photoURL} /> <Button color="purple" style={{background: "rgba(255, 255, 255, 0.1)"}} onClick={handleSignOut}> <span className="text-base font-semibold font-Josefin">Sign Out</span></Button></>:
       <><Avatar icon={<UserOutlined />} /> <Button color="purple" style={{background: "rgba(255, 255, 255, 0)"}} onClick={handleGoogleSignIn}> <span className="text-base font-semibold font-Josefin"><GoogleOutlined /> Sign In</span></Button></>}
     </div>

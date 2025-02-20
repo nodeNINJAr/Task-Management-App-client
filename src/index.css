@@ -1,7 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 /* tailwind css */
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @theme {
     --font-Josefin : "Josefin Sans", sans-serif; 
     --font-Roboto : "Roboto", sans-serif; 
   }
+.dark .ant-btn-default {
+  color: oklch(0.79 0 0);
+  background-color: #70707038;
+}
+
+.dark .dark-bg{
+  background-color: var(--color-gray-700);
+}
+.dark .bg-linear {
+  background: linear-gradient(to bottom, #1e3a8a, #6b46c1); /* Dark mode gradient */
+}
