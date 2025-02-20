@@ -3,6 +3,8 @@ import SignOut from "../components/SignOut";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
+import {Helmet} from "react-helmet";
+
 
 //
 const Home = () => {
@@ -26,6 +28,9 @@ const Home = () => {
   // 
   return (
     <div className="bg-gradient-to-b from-blue-500 to-purple-500 min-h-screen font-Roboto bg-linear">
+      <Helmet>
+        <title>Taskly || Home</title>
+      </Helmet>
     {contextHolder}
     <div className="p-4 sm:px-6 mx-auto">
       <nav className="flex justify-between items-center gap-10">

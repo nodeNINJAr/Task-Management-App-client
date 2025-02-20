@@ -6,6 +6,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import Task from "../components/Task";
 import TaskNav from "../components/TaskNav";
 import MarqueeText from "../components/MarqueeText";
+import { Helmet } from "react-helmet";
 
 
 // 
@@ -77,6 +78,9 @@ const handleDragEnd = async (result) => {
 // 
   return (
     <div className="p-4 sm:w-11/12 mx-auto sm:px-0">
+      <Helmet>
+        <title>Taskly || App</title>
+      </Helmet>
       {/* Marquee text */}
       <MarqueeText/>
       {/* task nav */}

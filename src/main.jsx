@@ -12,6 +12,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import PrivateRoute from "./private/PrivateRoute.jsx";
+import NotFound from "./page/NotFound.jsx";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -23,9 +24,10 @@ createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <Routes>
             <Route path="/" element={<App />}>
-              <Route index element={<Home />} />
-              <Route path="app" element={<PrivateRoute><TaskBoard /></PrivateRoute>} />
-            </Route>
+               <Route index element={<Home />} />
+                <Route path="app" element={<PrivateRoute><TaskBoard /></PrivateRoute>} />
+              </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
       </QueryClientProvider>
