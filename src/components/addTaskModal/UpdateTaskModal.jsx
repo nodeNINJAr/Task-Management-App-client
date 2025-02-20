@@ -7,7 +7,6 @@ const UpdateTaskModal = ({ visible, onCancel, onUpdate, task }) => {
   const [category, setCategory] = useState("To-Do");
   const [description, setDescription] = useState("");
 
-
   //   
   useEffect(() => {
     if (task) {

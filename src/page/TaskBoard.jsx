@@ -5,6 +5,7 @@ import useAuth from "../hooks/useAuth";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import Task from "../components/Task";
 import TaskNav from "../components/TaskNav";
+import MarqueeText from "../components/MarqueeText";
 
 
 // 
@@ -76,6 +77,8 @@ const handleDragEnd = async (result) => {
 // 
   return (
     <div className="p-4">
+      {/* Marquee text */}
+      <MarqueeText/>
       {/* task nav */}
        <TaskNav refresh={refresh} setRefresh={setRefresh}/>
       <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8">Task Board</h1>

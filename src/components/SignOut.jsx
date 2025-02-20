@@ -3,11 +3,13 @@ import React from "react";
 import { GoogleOutlined, UserOutlined } from '@ant-design/icons';
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import { useNavigate } from "react-router";
 
 const SignOut = () => {
     // 
     const {user,userSignOut, signInWithGoogle} = useAuth();
     const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
     //
     const handleGoogleSignIn = async () => {
      const {user} = await signInWithGoogle();
@@ -20,16 +22,19 @@ const SignOut = () => {
     //  
     try{
      await axiosPublic.post('/users', userInfo);
-     notification.success({message:"Congratulations! Sign Up Sucessfull"})
+     notification.success({message:"Congratulations! Sign Up Sucessfull"});
+     navigate('/app')
     }catch(err){
       if(err.status===403){
-        notification.success({message:"Welcome Back! Login Sucessfully"})
+        notification.success({message:"Welcome Back! Login Sucessfully"});
+        navigate('/app')
       }
     };
   }
     //User Sign Out 
     const handleSignOut = async()=>{
-       await userSignOut()
+       await userSignOut();
+       navigate('/');
     }
     // 
   return (

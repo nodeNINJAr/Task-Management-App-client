@@ -11,7 +11,6 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
 
   // google signin
   const provider = new GoogleAuthProvider();
@@ -27,7 +26,7 @@ const AuthProvider = ({ children }) => {
         setLoading(false);
       } else {
         setUser("");
-        setLoading(true);
+        setLoading(false);
       }
 
       return () => unsubscribe();
