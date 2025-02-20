@@ -71,7 +71,7 @@ const handleDragEnd = async (result) => {
     });
     socket.emit("task-updated"); 
   } catch (error) {
-    console.error("Error updating task order:", error);
+    // console.error("Error updating task order:", error);
   }
 };
 

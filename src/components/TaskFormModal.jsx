@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Form } from "antd";
+import { Button, Form, notification } from "antd";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
 import NewTaskModal from "./addTaskModal/AddTaskModal";
@@ -30,10 +30,13 @@ const TaskFormModal = ({setRefresh,refresh}) => {
       ...values,
       uid: user?.uid,
     });
+    
     if (data?.insertedId) {
+      notification.success({message:"Task Added"})
       setRefresh(!refresh);
       setIsModalVisible(false);
       form.resetFields();
+      
     }
   };
 

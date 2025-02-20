@@ -14,6 +14,10 @@ const Task = ({ task, provided,setRefresh,refresh }) => {
  // Convert to readable Date and Time
 const formattedDate = format(new Date(task?.timestamp), "dd/MM/yyyy"); 
 const formattedTime = format(new Date(task?.timestamp), "hh:mm a"); 
+const compareDate = format(new Date(), "dd/MM/yyyy"); 
+// 
+const isTaskOverdue = formattedDate < compareDate && task?.category !=="Done" ? true : false;
+
 // For Update Modal
 const [isUpdateVisible, setIsUpdateVisible] = useState(false);
 const [selectedTask, setSelectedTask] = useState(null);
@@ -47,7 +51,7 @@ const handleUpdateTask = async (updatedTask) => {
      }
     
   } catch (error) {
-    console.error("Error updating task:", error);
+    // console.error("Error updating task:", error);
   }
 };
 
@@ -123,7 +127,7 @@ const handleUpdateTask = async (updatedTask) => {
         />
       </svg>
       <span className="text-gray-700 text-base font-Josefin dark:text-gray-300">
-        {formattedDate}, {formattedTime}
+        <span className={`${isTaskOverdue&&"text-red-500"}`}>{formattedDate}</span>, {formattedTime}
       </span>
     </div>
   </div>

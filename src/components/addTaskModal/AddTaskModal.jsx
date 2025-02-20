@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Input, Radio, Button } from 'antd';
+import { Modal, Input, Radio, Button, message } from 'antd';
 import './NewTaskModal.css';
 import PropTypes from 'prop-types';
 
@@ -7,6 +7,7 @@ const NewTaskModal = ({ visible, onCancel, onCreate }) => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Personal');
   const [description, setDescription] = useState('');
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -23,9 +24,24 @@ const NewTaskModal = ({ visible, onCancel, onCreate }) => {
   const handleCancel = () => {
     onCancel();
   };
-
+  // 
+    // Reset form fields
+    const resetForm = () => {
+      setTitle('');
+      setCategory('');
+      setDescription('');
+    };
+  // 
   const handleCreate = () => {
+     if(!title || !category || !description){
+       return messageApi.open({
+        type: 'warning',
+        content: <span className="text-base font-medium font-Roboto capitalize">Please Fill all field to add task</span>,
+        duration: 5,
+      });
+     }
     onCreate({ title, category, description });
+    resetForm();
   };
 
   return (
@@ -43,6 +59,7 @@ const NewTaskModal = ({ visible, onCancel, onCreate }) => {
       ]}
     >
       <div className="modal-content">
+         {contextHolder}
         <div className="form-group">
           <label className='mb-2' htmlFor="title">Title Task</label>
           <Input id="title" value={title} onChange={handleTitleChange} placeholder="Add Task Name..." />
