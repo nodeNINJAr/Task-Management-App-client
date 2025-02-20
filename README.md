@@ -41,8 +41,8 @@
 ---
 
 ## Live Links
-- **Live Site:** [https://task-manager-c5ec9.web.app](https://task-manager-c5ec9.web.app)  [https://taskly-tm.netlify.app](https://taskly-tm.netlify.app)
-- 
+- **Live Site:** [https://task-manager-c5ec9.web.app](https://task-manager-c5ec9.web.app) --or-- [https://taskly-tm.netlify.app](https://taskly-tm.netlify.app)
+  
 
 ---
 
