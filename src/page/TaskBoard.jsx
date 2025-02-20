@@ -76,7 +76,7 @@ const handleDragEnd = async (result) => {
 
 // 
   return (
-    <div className="p-4">
+    <div className="p-4 sm:w-11/12 mx-auto sm:px-0">
       {/* Marquee text */}
       <MarqueeText/>
       {/* task nav */}

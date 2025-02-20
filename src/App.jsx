@@ -7,7 +7,7 @@ const App = () => {
   // 
   return (
     <div className="container mx-auto">
-      <main className="w-11/12 mx-auto">
+      <main>
         <Outlet />
       </main>
     </div>

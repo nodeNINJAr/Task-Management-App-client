@@ -10,7 +10,6 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return <div className='flex justify-center items-center min-h-screen'><Spin size="large" /></div>; 
   }
-
   if (user) {
     return children; 
   }
