@@ -33,6 +33,7 @@ const TaskBoard = () => {
     setIsLoading(false);
 };
 
+
 // 
 const handleDragEnd = async (result) => {
   const { destination, draggableId } = result;
@@ -79,6 +80,9 @@ const handleDragEnd = async (result) => {
   }
 };
 
+
+
+
 // 
   return (
     <div className="p-4 sm:w-11/12 mx-auto sm:px-0">
@@ -89,8 +93,8 @@ const handleDragEnd = async (result) => {
       <MarqueeText/>
       {/* task nav */}
        <TaskNav refresh={refresh} setRefresh={setRefresh}/>
-      <h1 className="text-center  text-2xl sm:text-3xl font-bold font-Josefin my-8 dark:text-white">Task Board</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 font-Roboto">
+      <h1 className="text-center text-2xl sm:text-3xl font-bold font-Josefin my-8 dark:text-white">Task Board</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 font-Roboto">
         <DragDropContext onDragEnd={handleDragEnd}>
           {["To-Do", "In Progress", "Done"].map((category) => (
             <Droppable key={category} droppableId={category}>
@@ -98,7 +102,7 @@ const handleDragEnd = async (result) => {
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className=" dark-bg bg-gray-200 p-4 rounded-md min-h-[300px] space-y-4"
+                  className="col-span-1 md:col-span-1 dark-bg bg-gray-200 p-4 rounded-md min-h-[300px] space-y-4"
                    >
                      <h3 className="text-lg font-bold mb-2 dark:text-gray-100">{category}</h3>
                        {!isLoading ?

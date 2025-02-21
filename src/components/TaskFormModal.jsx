@@ -11,6 +11,7 @@ const TaskFormModal = ({setRefresh,refresh}) => {
   //
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [error, setError] = useState('')
 
   // Function to show the modal
   const showModal = () => {
@@ -21,22 +22,26 @@ const TaskFormModal = ({setRefresh,refresh}) => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
+    setError('');
   };
 
   // Function to handle form submission
   const handleCreate = async (values) => {
     // 
-    const { data } = await axiosSecure.post("/tasks", {
-      ...values,
-      uid: user?.uid,
-    });
-    
-    if (data?.insertedId) {
-      notification.success({message:"Task Added"})
-      setRefresh(!refresh);
-      setIsModalVisible(false);
-      form.resetFields();
-      
+    try{
+      const { data } = await axiosSecure.post("/tasks", {
+        ...values,
+        uid: user?.uid,
+      });
+      if (data?.insertedId) {
+        setError('')
+        notification.success({message:"Task Added"})
+        setRefresh(!refresh);
+        setIsModalVisible(false);
+        form.resetFields();
+      }
+    }catch(err){
+      setError(err?.response?.data?.error)
     }
   };
 
@@ -51,6 +56,8 @@ const TaskFormModal = ({setRefresh,refresh}) => {
         visible={isModalVisible}
         onCancel={handleCancel}
         onCreate={handleCreate}
+        error={error}
+        refresh={refresh}
       />
     </div>
   );

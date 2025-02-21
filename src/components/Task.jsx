@@ -13,13 +13,18 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
   // Convert to readable Date and Time
   const formattedDate = format(new Date(task?.timestamp), "dd/MM/yyyy");
   const formattedTime = format(new Date(task?.timestamp), "hh:mm a");
+  const formattedDueDate = format(new Date(task?.dueDate), "dd/MM/yyyy");
+  // 
   const compareDate = format(new Date(), "dd/MM/yyyy");
   //
-  const isTaskOverdue = formattedDate < compareDate && task?.category !== "Done" ? true : false;
-
+  const isTaskOverdue = formattedDueDate < compareDate && task?.category !== "Done" ? true : false;
   // For Update Modal
   const [isUpdateVisible, setIsUpdateVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  // Showing Error On modal
+  const [error, setError] = useState('');
+
+
 
   // For task delete
   const handleDelete = async (task) => {
@@ -43,23 +48,31 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
     setSelectedTask(task);
     setIsUpdateVisible(true);
   };
+  // close modal
+  const handleCancle =()=>{
+      setError('')
+      setIsUpdateVisible(false)
+  }
+
 
   // Update function
   const handleUpdateTask = async (updatedTask) => {
+    //  
     try {
-      const { data } = await axiosSecure.put(
-        `/tasks/${updatedTask._id}`,
+      const { data } = await axiosSecure.put(`/tasks/${updatedTask._id}`,
         updatedTask
       );
       if (data?.modifiedCount === 1) {
         notification.success({ message: "Task Updated" });
         setRefresh(!refresh); // Refresh list
         setIsUpdateVisible(false);
+        setError('')
       }
-    } catch (error) {
-      // console.error("Error updating task:", error);
+    } catch (err) {
+      setError(err?.response?.data?.error)
     }
   };
+
 
   //
   return (
@@ -76,11 +89,11 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
     >
       {/* Task Content */}
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-lg font-semibold capitalize dark:text-gray-500">
+        <h2 className="text-lg font-semibold capitalize dark:text-gray-500 text-wrap truncate">
           {task?.title}
         </h2>
         <button
-          className={`bg-white px-3 py-1 rounded-full font-Josefin ${
+          className={`text-nowrap bg-white px-3 py-1 rounded-full font-Josefin ${
             (task?.category === "To-Do" &&
               "text-green-500 dark:text-green-300") ||
             (task?.category === "In Progress" &&
@@ -94,12 +107,11 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
       </div>
 
       {/* Task Description */}
-      <p className="text-gray-700 mb-2 text-sm dark:text-gray-300">
+      <p className="text-gray-700 mb-2 text-sm dark:text-gray-300 w-full text-wrap truncate mb-2">
         # {task?.description}
       </p>
 
       {/* Date & Time */}
-      <div className="flex items-center mb-2 justify-between gap-1">
         <div className="flex justify-start items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -122,6 +134,40 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
             , {formattedTime}
           </span>
         </div>
+      {/* Due Time & Date*/}
+       <div className="flex justify-between items-center gap-2">
+          <div className="flex justify-start items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-6 w-6 mr-2 ${isTaskOverdue ? "text-red-500" : "text-gray-500 dark:text-gray-400"}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {/* Clock Icon */}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+              {/* Exclamation Mark (for overdue tasks) */}
+              {isTaskOverdue && (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              )}
+            </svg>
+            <span className="text-gray-700 text-base font-Josefin dark:text-gray-300 text-wrap truncate">
+              <span className={`${isTaskOverdue ? "text-red-500" : ""} truncate`}>
+                {formattedDueDate}
+              </span>
+              , {formattedTime}
+            </span>
+          </div>
         {/* Action Buttons (Edit and Delete) */}
         <div className="flex space-x-2">
           <button
@@ -132,9 +178,10 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
           </button>
           <UpdateTaskModal
             visible={isUpdateVisible}
-            onCancel={() => setIsUpdateVisible(false)}
+            onCancel={handleCancle}
             onUpdate={handleUpdateTask}
             task={selectedTask}
+            error={error}
           />
           <button
             onClick={() => handleDelete(task)}
@@ -143,7 +190,7 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
             <DeleteOutlined />
           </button>
         </div>
-      </div>
+       </div>
     </div>
   );
 };
@@ -154,6 +201,7 @@ Task.propTypes = {
     title: PropTypes.string,
     category: PropTypes.string,
     description: PropTypes.string,
+    dueDate: PropTypes.string,
   }).isRequired,
   provided: PropTypes.object.isRequired,
   setRefresh: PropTypes.func.isRequired,
