@@ -18,7 +18,7 @@ const DarkMode = () => {
   };
 
   return (
-    <button className='text-xl dark:text-gray-300' onClick={toggleDarkMode}>
+    <button className='text-2xl dark:text-gray-300 flex justify-center items-center cursor-pointer' onClick={toggleDarkMode}>
       {isDarkMode ?<SunOutlined /> : <MoonOutlined />}
     </button>
   );

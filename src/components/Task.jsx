@@ -15,8 +15,7 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
   const formattedTime = format(new Date(task?.timestamp), "hh:mm a");
   const compareDate = format(new Date(), "dd/MM/yyyy");
   //
-  const isTaskOverdue =
-    formattedDate < compareDate && task?.category !== "Done" ? true : false;
+  const isTaskOverdue = formattedDate < compareDate && task?.category !== "Done" ? true : false;
 
   // For Update Modal
   const [isUpdateVisible, setIsUpdateVisible] = useState(false);
@@ -31,7 +30,7 @@ const Task = ({ task, provided, setRefresh, refresh }) => {
       notification.success({
         message: (
           <>
-            Task Deleted From{" "}
+            Task Deleted From
             <span className="text-red-500">{task?.category}</span>
           </>
         ),

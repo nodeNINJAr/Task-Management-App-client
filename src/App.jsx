@@ -6,8 +6,8 @@ const App = () => {
 
   // 
   return (
-    <div className="container mx-auto dark:bg-gray-800">
-      <main>
+    <div className="dark:bg-gray-800">
+      <main className="container mx-auto min-h-screen">
         <Outlet />
       </main>
     </div>

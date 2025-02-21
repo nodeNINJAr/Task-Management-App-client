@@ -7,6 +7,8 @@ import Task from "../components/Task";
 import TaskNav from "../components/TaskNav";
 import MarqueeText from "../components/MarqueeText";
 import { Helmet } from "react-helmet";
+import Empty from "../components/shared/Empty";
+import SceletonLoader from "../components/shared/SceletonLoader";
 
 
 // 
@@ -15,6 +17,7 @@ const TaskBoard = () => {
   const [tasks, setTasks] = useState([]);
   const { user } = useAuth();
   const [refresh,setRefresh] = useState(false);
+  const [isLoading , setIsLoading] = useState(true)
   //
   useEffect(() => {
     fetchTasks();
@@ -27,6 +30,7 @@ const TaskBoard = () => {
     const response = await axiosSecure(`/tasks?uid=${user?.uid}`);
     const sortedTasks = response.data.sort((a, b) => a.position - b.position);
     setTasks(sortedTasks);
+    setIsLoading(false);
 };
 
 // 
@@ -95,23 +99,32 @@ const handleDragEnd = async (result) => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className=" dark-bg bg-gray-200 p-4 rounded-md min-h-[300px] space-y-4"
-                >
-                  <h3 className="text-lg font-bold mb-2 dark:text-gray-100">{category}</h3>
-                  {tasks
-                    .filter((task) => task.category === category)
-                    .map((task, index) => (
-                      <Draggable
-                        key={task._id}
-                        draggableId={task._id}
-                        index={index}
-                      >
-                        {(provided) => (
+                   >
+                     <h3 className="text-lg font-bold mb-2 dark:text-gray-100">{category}</h3>
+                       {!isLoading ?
                           <>
-                            <Task refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
-                          </>
-                        )}
-                      </Draggable>
-                    ))}
+                            {tasks?.find(task=> task?.category === category) ? 
+                             <>
+                              {tasks
+                                 .filter((task) => task.category === category)
+                                    .map((task, index) => (
+                                     <Draggable
+                                     key={task._id}
+                                     draggableId={task._id}
+                                     index={index}
+                                     >
+                                     {(provided) => (
+                                       <>
+                                         <Task refresh={refresh} setRefresh={setRefresh} task={task} provided={provided} />
+                                      </>
+                                     )}
+                                   </Draggable>
+                                 ))}
+                               </>
+                            :<><Empty category={category}/></>
+                          }
+                         </>:<><SceletonLoader/></>
+                    }
                   {provided.placeholder}
                 </div>
               )}
