@@ -21,8 +21,15 @@ const TaskBoard = () => {
   //
   useEffect(() => {
     fetchTasks();
-    socket.on("task-updated", fetchTasks);
-    return () => socket.off("task-updated");
+    socket.on("task-updated", (updatedTasks) => {
+      if (Array.isArray(updatedTasks)) {
+        const sortedTasks = updatedTasks.sort((a, b) => a.position - b.position);
+        setTasks(sortedTasks);
+      } else {
+        fetchTasks();
+      }
+    });
+    
   }, [user?.uid, refresh]);
 
   // Fetch data by user
@@ -32,6 +39,9 @@ const TaskBoard = () => {
     setTasks(sortedTasks);
     setIsLoading(false);
 };
+
+
+
 
 
 // 
